@@ -4,9 +4,10 @@ from settings import *
 vec = pg.math.Vector2
 
 class Player(pg.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, game):
         pg.sprite.Sprite.__init__(self)
-        self.image = pg.Surface((50, 50))
+        self.game = game
+        self.image = pg.Surface((40, 40))
         self.image.fill(WHITE)
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH / 2, HEIGHT / 2)
@@ -14,20 +15,23 @@ class Player(pg.sprite.Sprite):
         self.vel = vec(0, 0)
         self.acc = vec(0, 0)
 
+    def jump(self):
+        self.rect.x += 1
+        hits = pg.sprite.spritecollide(self, self.game.platforms, False)
+        self.rect.x -= 1
+        if hits:
+            self.vel.y = -15
+
     def update(self):
-        self.acc = vec(0, 0)
+        self.acc = vec(0, PLAYER_GRAVITY)
         keys = pg.key.get_pressed()
-        if keys[pg.K_LEFT]:
+        if keys[pg.K_a]:
             self.acc.x = -PLAYER_ACC
-        if keys[pg.K_RIGHT]:
+        if keys[pg.K_d]:
             self.acc.x = PLAYER_ACC
-        if keys[pg.K_UP]:
-            self.acc.y = -PLAYER_ACC
-        if keys[pg.K_DOWN]:
-            self.acc.y = PLAYER_ACC
 
         # apply friction
-        self.acc += self.vel * PLAYER_FRICTION
+        self.acc.x += self.vel.x * PLAYER_FRICTION
 
         # equations of motion
         self.vel += self.acc
@@ -38,9 +42,15 @@ class Player(pg.sprite.Sprite):
             self.pos.x = 0
         if self.pos.x < 0:
             self.pos.x = WIDTH
-        if self.pos.y > HEIGHT:
-            self.pos.y = 0
-        if self.pos.y < 0:
-            self.pos.y = HEIGHT
 
-        self.rect.center = self.pos
+        self.rect.midbottom = self.pos
+
+class Platform(pg.sprite.Sprite):
+    def __init__(self, x, y, w, h):
+        pg.sprite.Sprite.__init__(self)
+        self.image = pg.Surface((w, h))
+        self.image.fill(GREEN)
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        
