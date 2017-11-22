@@ -1,4 +1,4 @@
-
+# Sprite classes for platform game
 import pygame as pg
 from settings import *
 vec = pg.math.Vector2
@@ -16,14 +16,15 @@ class Player(pg.sprite.Sprite):
         self.acc = vec(0, 0)
 
     def jump(self):
-        self.rect.x += 1
+        # jump only if standing on a platform
+        self.rect.y += 1
         hits = pg.sprite.spritecollide(self, self.game.platforms, False)
-        self.rect.x -= 1
+        self.rect.y -= 1
         if hits:
-            self.vel.y = -15
+            self.vel.y = PLAYER_JUMP
 
     def update(self):
-        self.acc = vec(0, PLAYER_GRAVITY)
+        self.acc = vec(0, PLAYER_GRAV)
         keys = pg.key.get_pressed()
         if keys[pg.K_a]:
             self.acc.x = -PLAYER_ACC
@@ -32,11 +33,9 @@ class Player(pg.sprite.Sprite):
 
         # apply friction
         self.acc.x += self.vel.x * PLAYER_FRICTION
-
         # equations of motion
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
-        
         # wrap around the sides of the screen
         if self.pos.x > WIDTH:
             self.pos.x = 0
@@ -53,4 +52,3 @@ class Platform(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-        
