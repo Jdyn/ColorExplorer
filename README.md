@@ -1,11 +1,9 @@
 # ColorExplorer
-PLTW 1.1.7 | Python App | "ColorExplorer" Game
+PLTW 1.1.7 | Python Game | 2017
 
-This is a game made from scratch for an extra credit assignment.
+The goal of the game is to find the meaning of life. In order to find the meaning, You must reach the end of the game. There is no end to the game because the platforms are procedurally generated.
 
-The goal of the game is to find the meaning of life. In order to find the meaning, You must reach the top of the chasm. The game is procedurally generated and there is no end to the game because the platforms are created endlessly.
+This is not meant to be a fully functioning game. It is possible for procedurally generated platforms to be unreachable.
 
-This is not meant to be a functioning game by any stretch of the imagination.
-
-It is less of an interesting and dynamic game and more so a demonstration of programming and artistic capabilities.
+It is less of an interesting and dynamic game and more so a demonstration of programming capabilities.
 This game uses the Pygame Library.
